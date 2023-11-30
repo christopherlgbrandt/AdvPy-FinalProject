@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mongo DB Data</title>
+</head>
+<body>
+    <h1>Mongo DB Data</h1>
+    <form action="/add" method="POST">
+        <input type="text" name="content" placeholder="Enter data">
+        <button type="submit">Add Data</button>
+    </form>
+
+    <h2>Data:</h2>
+    <ul>
+        {% for info in data %}
+            <li>{{ info.content }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
