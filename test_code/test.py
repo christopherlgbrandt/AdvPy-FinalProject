@@ -7,7 +7,7 @@ client = MongoClient(uri,
                      tlsCertificateKeyFile='../X509-cert-6268247238609712663.pem',
                      server_api=ServerApi('1'))
 
-db = client['testDB']
-collection = db['testCol']
+db = client['testDATA']
+collection = db['testCOLLECT']
 doc_count = collection.count_documents({})
 print(doc_count)
