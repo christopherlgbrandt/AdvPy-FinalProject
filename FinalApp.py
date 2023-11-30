@@ -43,5 +43,19 @@ def add_task():
     collection.insert_one(new_data)
     return redirect(url_for('index'))
 
+@app.route('/search_movie')
+def search_movie():
+    # Example: Searching movies by a keyword
+    search_query = request.args.get('query')
+    tmdb_endpoint = f'https://api.themoviedb.org/3/search/movie?api_key={tmdb_api_key}&query={search_query}'
+    
+    # Make a request to TMDB API
+    response = requests.get(tmdb_endpoint)
+    if response.status_code == 200:
+        movies = response.json()['results']
+        return render_template('movies.html', movies=movies)
+    else:
+        return "Failed to fetch data from TMDB"
+
 if __name__ == "__main__":
     app.run(debug=True)
