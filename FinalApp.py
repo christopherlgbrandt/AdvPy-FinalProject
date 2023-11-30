@@ -3,10 +3,11 @@ from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 from pymongo.errors import OperationFailure
 from flask import Flask, render_template, request, redirect, url_for 
+# Dependencies: requests, pymongo, flask
 
 app = Flask(__name__)
 
-path_to_certificate = '/home/christopher/Documents/ClassesFall2023/CSCI310/FinalProject.pem'
+path_to_certificate = '../FinalProject.pem'
 
 uri = "mongodb+srv://finalproject.d5uengt.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority"
 

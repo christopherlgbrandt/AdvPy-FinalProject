@@ -2,22 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mongo DB Data</title>
+    <title>Adv-PyFinalApp</title>
+    <style>
+        /* CSS styles for centering content */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Set the height of the body to viewport height for vertical centering */
+            margin: 0; /* Remove default margin */
+        }
+
+        h1, h2, form {
+            margin-bottom: 20px; /* Add spacing between elements */
+        }
+    </style>
 </head>
 <body>
-    <h1>Mongo DB Data</h1>
-    <form action="/add" method="POST">
-        <input type="text" name="content" placeholder="Enter data">
-        <button type="submit">Add Data</button>
+    <h1>Adv-Py Final App</h1>
+    <h2>TMDB Movie Search</h2>
+    <form action="/search_movie" method="GET"> <!-- Change action and method -->
+        <input type="text" name="query" placeholder="Search movies...">
+        <button type="submit">Search</button>
     </form>
-
-    <h2>Data:</h2>
-    <ul>
-        {% for info in data %}
-            <li>{{ info.content }}</li>
-        {% endfor %}
-    </ul>
-    <!-- Example link/button to navigate to the movie search page -->
-    <a href="/search_movie">Search Movies</a>
 </body>
 </html>
