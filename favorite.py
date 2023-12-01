@@ -28,7 +28,7 @@ def print_favorite() -> None:
          releaseDate = doc['Release Date']
          overview = doc['Overview']
          reviewScore = doc['Review Score']
-         print(f'Movie Poster: {moviePoster}\n{name} was released on {releaseDate} and a quick overview is:\n{overview}\nIt\'s total review score is {reviewScore}.')
+         print(f'Movie Poster: {moviePoster}\n{name} was released on {releaseDate} and a quick overview is:\n{overview}\nIts total review score is {reviewScore}.')
    else:
       print("No results found :(")
 
