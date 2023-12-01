@@ -3,8 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>TMDB Movies</title>
-    <!-- Include any CSS stylesheets if needed -->
-    <!-- For example, you can link a CSS file in your static folder -->
+    <style>
+        body {
+            text-align: center;
+            margin-right: 500px;
+            margin-left: 500px;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .movie {
+            test-align: left;
+            margin-bottom: 40px;
+        }
+        .movie img {
+            display: block;
+            margin: 0 auto;
+            max-width: 300px;
+            height: auto;
+        }
+    </style>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
@@ -14,8 +33,12 @@
         {% for movie in movies %}
             <div class="movie">
                 <h2>{{ movie.title }}</h2>
+                {% if movie.poster_path %}
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                {% endif %}
                 <p>Release Date: {{ movie.release_date }}</p>
                 <p>Overview: {{ movie.overview }}</p>
+                <p>Movie Rating: {{ movie.vote_average }}</p>
                 <!-- You can display more information about each movie here -->
             </div>
         {% endfor %}
