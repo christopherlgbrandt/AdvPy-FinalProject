@@ -11,24 +11,27 @@ client = MongoClient(uri,
 db = client['favoriteMoviesDATA']
 collection = db['favoriteMoviesCOLLECT']
 
-def favorite(name, releaseDate, overview) -> None:
+def favorite(moviePoster, name, releaseDate, overview, reviewScore) -> None:
    """Allows one to "favorite" a movie saving
       it to a database on MongoDB
    """
-   favMovie = {"Name": name, "Release Date": releaseDate, "Overview": overview}
+   favMovie = {"Movie Poster": moviePoster, "Name": name, "Release Date": releaseDate,
+               "Overview": overview, "Review Score": reviewScore}
    collection.insert_one(favMovie)
 
 def print_favorite() -> None:
    result = collection.find()
    if result:
       for doc in result:
+         moviePoster = doc['Movie Poster']
          name = doc['Name']
          releaseDate = doc['Release Date']
          overview = doc['Overview']
-         print(f'{name} was released on {releaseDate} and a quick overview is:\n{overview}')
+         reviewScore = doc['Review Score']
+         print(f'Movie Poster: {moviePoster}\n{name} was released on {releaseDate} and a quick overview is:\n{overview}\nIt\'s total review score is {reviewScore}.')
    else:
       print("No results found :(")
 
 if __name__ == "__main__":
-   #favorite("idk", "idk", "idk")
+   favorite("Some Jon Bois tweet or something", "17776", "Not 17776", "Football, but weird", "Hopefully a 10/10")
    print_favorite()
