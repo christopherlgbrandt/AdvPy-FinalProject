@@ -5,15 +5,18 @@ from pymongo.errors import OperationFailure
 uri = "mongodb+srv://finalproject.d5uengt.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority"
 client = MongoClient(uri,
                      tls=True,
-                     tlsCertificateKeyFile='../FinalProject.pem',
+                     tlsCertificateKeyFile='FinalProject.pem',
                      server_api=ServerApi('1'))
 
 db = client['favoriteMoviesDATA']
 collection = db['favoriteMoviesCOLLECT']
 
-def favorite() -> None:
-    """Allows one to "favorite" a movie saving
-       it to a database on MongoDB
-    """
-    favMovie = {"Name": "Test", "Release Date": "17776", "Overview": "Test"}
-    collection.insert_one(favMovie)
+def favorite(name, releaseDate, overview) -> None:
+   """Allows one to "favorite" a movie saving
+      it to a database on MongoDB
+   """
+   favMovie = {"Name": name, "Release Date": releaseDate, "Overview": overview}
+   collection.insert_one(favMovie)
+
+if __name__ == "__main__":
+   favorite("Test", "17776", "More test text")
