@@ -7,7 +7,7 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
-path_to_certificate = '../FinalProject.pem'
+path_to_certificate = 'FinalProject.pem'
 
 uri = "mongodb+srv://finalproject.d5uengt.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority"
 
