@@ -20,6 +20,8 @@ def favorite(moviePoster, name, releaseDate, overview, reviewScore) -> None:
    collection.insert_one(favMovie)
 
 def print_favorite() -> None:
+   """Prints the list of favorite movies from MongoDB
+   """
    result = collection.find()
    if result:
       for doc in result:
