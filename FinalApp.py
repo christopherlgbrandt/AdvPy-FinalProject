@@ -1,5 +1,5 @@
 import requests
-import favorite
+import favorite.py
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 from pymongo.errors import OperationFailure

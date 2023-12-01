@@ -18,5 +18,17 @@ def favorite(name, releaseDate, overview) -> None:
    favMovie = {"Name": name, "Release Date": releaseDate, "Overview": overview}
    collection.insert_one(favMovie)
 
+def print_favorite() -> None:
+   result = collection.find()
+   if result:
+      for doc in result:
+         name = doc['Name']
+         releaseDate = doc['Release Date']
+         overview = doc['Overview']
+         print(f'{name} was released on {releaseDate} and a quick overview is:\n{overview}')
+   else:
+      print("No results found :(")
+
 if __name__ == "__main__":
-   favorite("Test", "17776", "More test text")
+   #favorite("idk", "idk", "idk")
+   print_favorite()
