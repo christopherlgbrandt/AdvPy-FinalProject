@@ -6,24 +6,27 @@
     <style>
         body {
             text-align: center;
-            margin-right: 500px;
-            margin-left: 500px;
+            margin-right: 50px;
+            margin-left: 50px;
+            background-color: rgb(77, 12, 73);
         }
         h1 {
-            font-size: 36px;
+            font-size: 50px;
             margin-bottom: 20px;
+            color: white;
         }
         .movie-list {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Create a responsive grid layout */
-            gap: 20px; /* Spacing between grid items */
+            gap: 15px 70px; /* Spacing between grid items */
             justify-items: center; /* Center items horizontally */
             align-items: center; /* Center items vertically */
-            padding: 20px; /* Add some padding to the grid */
+            padding: 0px; /* Add some padding to the grid */
         }
         .movie {
             test-align: left;
-            margin-bottom: 40px;
+            margin-bottom: 10px;
+            color: white;
         }
         .movie img {
             display: block;
@@ -31,10 +34,28 @@
             max-width: 300px;
             height: auto;
         }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        .back-button a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: white;
+            color: rgb(77, 12, 73);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
     </style>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <div class="back-button">
+        <a href="">Back to Main Page</a>
+    </div>
+
     <h1>TMDB Movies</h1>
 
     <div class="movie-list">
