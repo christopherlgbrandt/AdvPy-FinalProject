@@ -7,7 +7,7 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
-path_to_certificate = './FinalProject.pem'
+path_to_certificate = '../FinalProject.pem'
 
 uri = "mongodb+srv://finalproject.d5uengt.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority"
 
@@ -57,6 +57,18 @@ def search_movie():
         return render_template('movies.html', movies=movies)
     else:
         return "Failed to fetch data from TMDB"
+    
+@app.route('/movie_info')
+def movie_info():
+    movie_id = request.args.get('movie_id')
+    tmdb_result = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={tmdb_api_key}'
+
+    response = requests.get(tmdb_result)
+    if response.status_code == 200:
+        movie = response.json()
+        return render_template('info.html', movie=movie)
+    else:
+        return "failed to fetch data from TMDB"
 
 if __name__ == "__main__":
     app.run(debug=True)

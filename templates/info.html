@@ -58,22 +58,17 @@
 
     <h1>TMDB Movies</h1>
 
-    <div class="movie-list">
-        {% for movie in movies %}
-            <div class="movie">
-                <h2>{{ movie.title }}</h2>
-                {% if movie.poster_path %}
-                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
-                {% endif %}
-                <h3>Movie Rating: {{ movie.vote_average }}</h3>
-                <!-- You can display more information about each movie here -->
-                <form action="/movie_info" method="GET"> <!-- Change action and method -->
-                    <input type="hidden" name="movie_id" value="{{ movie.id }}">
-                    <button type="submit">More Info</button>
-                </form>
-            </div>
-        {% endfor %}
-    </div>
+        <div class="movie">
+            <h2>{{ movie.title }}</h2>
+            <h3>"{{ movie.tagline }}"</h3>
+            {% if movie.poster_path %}
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+            {% endif %}
+            <p>Movie Rating: {{ movie.vote_average }}</p>
+            <p>{{ movie.runtime }} Minutes</p>
+            <p>{{ movie.overview }}</p>
+            <!-- You can display more information about each movie here -->
+        </div>
 
     <!-- Include any JavaScript files if needed -->
     <!-- For example, you can link a JS file in your static folder -->
