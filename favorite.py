@@ -1,6 +1,9 @@
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 from pymongo.errors import OperationFailure
+from flask import Flask, render_template, request, redirect, url_for 
+
+app = Flask(__name__)
 
 uri = "mongodb+srv://finalproject.d5uengt.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority"
 client = MongoClient(uri,
@@ -19,21 +22,22 @@ def favorite(moviePoster, name, releaseDate, overview, reviewScore) -> None:
                "Overview": overview, "Review Score": reviewScore}
    collection.insert_one(favMovie)
 
-def print_favorite() -> None:
+def unFavorite(moviePoster, name, releaseDate, overview, reviewScore) -> None:
+   """Unfavorites a movie
+   """
+   collection.delete_one({"Movie Poster": moviePoster, "Name": name, "Release Date": releaseDate,
+                         "Overview": overview, "Review Score": reviewScore})
+
+@app.route('/favorites')
+def print_favorite():
    """Prints the list of favorite movies from MongoDB
    """
    result = collection.find()
    if result:
-      for doc in result:
-         moviePoster = doc['Movie Poster']
-         name = doc['Name']
-         releaseDate = doc['Release Date']
-         overview = doc['Overview']
-         reviewScore = doc['Review Score']
-         print(f'Movie Poster: {moviePoster}\n{name} was released on {releaseDate} and a quick overview is:\n{overview}\nIts total review score is {reviewScore}.')
+      movies = result.json()['results']
+      return render_template('favorites.html', movies=movies)
    else:
       print("No results found :(")
 
 #if __name__ == "__main__":
-#   favorite("Some Jon Bois tweet or something", "17776", "Not 17776", "Football, but weird", "Hopefully a 10/10")
-#   print_favorite()
+#   unFavorite("Some Jon Bois tweet or something", "17776", "Not 17776", "Football, but weird", "Hopefully a 10/10")
