@@ -34,6 +34,6 @@ def print_favorite() -> None:
    else:
       print("No results found :(")
 
-if __name__ == "__main__":
-   favorite("Some Jon Bois tweet or something", "17776", "Not 17776", "Football, but weird", "Hopefully a 10/10")
-   print_favorite()
+#if __name__ == "__main__":
+#   favorite("Some Jon Bois tweet or something", "17776", "Not 17776", "Football, but weird", "Hopefully a 10/10")
+#   print_favorite()
