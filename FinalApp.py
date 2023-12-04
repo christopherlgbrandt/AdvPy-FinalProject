@@ -66,7 +66,12 @@ def movie_info():
     response = requests.get(tmdb_result)
     if response.status_code == 200:
         movie = response.json()
-        return render_template('info.html', movie=movie)
+        movie_in_favorites = checkFavorite(response['Movie Poster'],
+                                           response['Name'],
+                                           response['Release Date'],
+                                           response['Overview'],
+                                           response['Review Score'])
+        return render_template('info.html', movie=movie, movie_in_favorites=movie_in_favorites)
     else:
         return "failed to fetch data from TMDB"
     
