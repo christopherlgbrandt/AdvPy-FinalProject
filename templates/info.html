@@ -23,6 +23,9 @@
             align-items: center; /* Center items vertically */
             padding: 0px; /* Add some padding to the grid */
         }
+        img.movie_info {
+            height: 85%;
+        }
         .movie {
             text-align: left;
             margin-bottom: 10px;
@@ -53,22 +56,34 @@
 </head>
 <body>
     <div class="back-button">
-        <a href="">Back to Main Page</a>
+        <a href="/">Back to Main Page</a>
+        <a href="javascript:history.back()">Back to Search Results</a>
     </div>
 
     <h1>TMDB Movies</h1>
 
-        <div class="movie">
-            <h2>{{ movie.title }}</h2>
-            <h3>"{{ movie.tagline }}"</h3>
-            {% if movie.poster_path %}
-                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
-            {% endif %}
-            <p>Movie Rating: {{ movie.vote_average }}</p>
-            <p>{{ movie.runtime }} Minutes</p>
-            <p>{{ movie.overview }}</p>
-            <!-- You can display more information about each movie here -->
-        </div>
+            <div class="movie">
+                <h2>{{ movie.title }}</h2>
+                <h3>"{{ movie.tagline }}"</h3>
+                {% for genre in movie.genres %}
+                    <h4>{{ genre.name }}</h4>
+                {% endfor %}
+
+                {% if movie.poster_path %}
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                {% endif %}
+                <h4>Overview</h4>
+                <p>{{ movie.overview }}</p>
+                <p>Movie Rating: {{ movie.vote_average }}</p>
+                <p>{{ movie.runtime }} Minutes</p>
+                <br>
+                <h4>Movies similar to {{ movie.title }}:</h4>
+                {% for i in range(0, 5) %}
+                    <p>{{ movie.recommendations.results[i].title }}</p>
+                {% endfor %}
+
+                <!-- You can display more information about each movie here -->
+            </div>
 
     <!-- Include any JavaScript files if needed -->
     <!-- For example, you can link a JS file in your static folder -->

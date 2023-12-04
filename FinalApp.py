@@ -61,7 +61,7 @@ def search_movie():
 @app.route('/movie_info')
 def movie_info():
     movie_id = request.args.get('movie_id')
-    tmdb_result = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={tmdb_api_key}'
+    tmdb_result = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={tmdb_api_key}&append_to_response=recommendations'
 
     response = requests.get(tmdb_result)
     if response.status_code == 200:
