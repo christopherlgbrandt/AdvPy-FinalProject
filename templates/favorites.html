@@ -67,6 +67,10 @@
                 {% endif %}
                 <h3>Movie Rating: {{ movie['Review Score'] }}</h3>
                 <!-- You can display more information about each movie here -->
+                <form action="/movie_info" method="GET">
+                    <input type="hidden" name="movie_id" value="{{ movie['Movie ID'] }}">
+                    <button type="submit" class="info-button">More Info</button>
+                </form>
             </div>
         {% endfor %}
     </div>

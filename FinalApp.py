@@ -70,19 +70,19 @@ def movie_info():
     else:
         return "failed to fetch data from TMDB"
     
-def favorite(moviePoster, name, releaseDate, overview, reviewScore) -> None:
+def favorite(moviePoster, name, releaseDate, overview, reviewScore, movieID) -> None:
    """Allows one to "favorite" a movie saving
       it to a database on MongoDB
    """
    favMovie = {"Movie Poster": moviePoster, "Name": name, "Release Date": releaseDate,
-               "Overview": overview, "Review Score": reviewScore}
+               "Overview": overview, "Review Score": reviewScore, "Movie ID": movieID}
    collection.insert_one(favMovie)
 
-def unFavorite(moviePoster, name, releaseDate, overview, reviewScore) -> None:
+def unFavorite(moviePoster, name, releaseDate, overview, reviewScore, movieID) -> None:
    """Unfavorites a movie
    """
    collection.delete_one({"Movie Poster": moviePoster, "Name": name, "Release Date": releaseDate,
-                         "Overview": overview, "Review Score": reviewScore})
+                         "Overview": overview, "Review Score": reviewScore, "Movie ID": movieID})
 
 @app.route('/add_favorite', methods=['POST'])
 def add_favorite():
@@ -93,7 +93,8 @@ def add_favorite():
         movie_data['Name'],
         movie_data['Release Date'],
         movie_data['Overview'],
-        movie_data['Review Score']
+        movie_data['Review Score'],
+        movie_data['Movie ID']
     )
     return "Movie added to favorites successfully!"
 
@@ -107,7 +108,8 @@ def remove_favorite():
         movie_data['Name'],
         movie_data['Release Date'],
         movie_data['Overview'],
-        movie_data['Review Score']
+        movie_data['Review Score'],
+        movie_data['Movie ID']
     )
     return "Movie removed from favorites successfully!"
 
