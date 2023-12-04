@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Adv-PyFinalApp</title>
+    <style>
+        /* CSS styles for centering content */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Set the height of the body to viewport height for vertical centering */
+            margin: 0; /* Remove default margin */
+            background-color: rgb(77, 12, 73);
+        }
+
+        h1{
+            font-size: 75px;
+            color: white;
+            margin-bottom: 10px; 
+        }
+        h2{
+            font-size: 30px;
+            margin-bottom: 20px; /* Add spacing between elements */
+            color: white;
+        }
+
+        form{
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Adv-Py Final App</h1>
+    <h2>TMDB Movie Search</h2>
+    <form action="/search_movie" method="GET"> <!-- Change action and method -->
+        <input type="text" name="query" placeholder="Search movies...">
+        <button type="submit">Search</button>
+    </form>
+    <!-- Button to navigate to favorites.html -->
+    <a href="/favorites" class="favorites-btn">
+        <button>View Favorites</button>
+    </a>
+</body>
+</html>

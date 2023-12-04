@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Info</title>
+    <style>
+        body {
+            margin: 0; /* Reset default margin */
+            padding: 0; /* Reset default padding */
+            background-color: rgb(77, 12, 73);
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            max-width: 1200px; /* Limit width of the content */
+            margin: 0 auto; /* Center the content horizontally */
+            padding: 20px;
+        }
+        .left-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .left-section img {
+            max-width: 500px;
+            height: auto;
+            margin-bottom 20px;
+        }
+        /* Style for the "More Info" button */
+        button#addToFavorites {
+            width: 100%;
+            margin-top: 20px;
+            font-size: 18px;
+            border: none;
+            background-color: white;
+            color: rgb(77, 12, 73);
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .right-section {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            margin-left: 200px;
+        }
+        h1 {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        .movie-details {
+            text-align: left;
+        }
+        .movie-details p {
+            margin-bottom: 10px;
+        }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        .back-button a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: white;
+            color: rgb(77, 12, 73);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+    <!-- Link jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="back-button">
+        <a href="/">Home</a>
+        <a href="javascript:history.back()">Back</a>
+    </div>
+
+    <div class="container">
+        <div class="left-section">
+            {% if movie.poster_path %}
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                <button id="addToFavorites">Add to Favorites</button>
+            {% endif %}
+        </div>
+        <div class="right-section">
+            <h1>{{ movie.title }}</h1>
+            <div class="movie-details">
+                <h3>"{{ movie.tagline }}"</h3>
+                {% for genre in movie.genres %}
+                    <h4>{{ genre.name }}</h4>
+                {% endfor %}
+                <h4>Overview</h4>
+                <p>{{ movie.overview }}</p>
+                <p>Movie Rating: {{ movie.vote_average }}</p>
+                <p>{{ movie.runtime }} Minutes</p>
+                <br>
+                <h4>Movies similar to {{ movie.title }}:</h4>
+                {% for i in range(0, 5) %}
+                    <p>{{ movie.recommendations.results[i].title }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Include any JavaScript files if needed -->
+    <!-- For example, you can link a JS file in your static folder -->
+    <script>
+        $(document).ready(function() {
+            // Event listener for the "Add to Favorites" button
+            $('#addToFavorites').on('click', function() {
+                // Prepare the data to be sent (movie details)
+                var movieDetails = {
+                    "Movie Poster": "{{ movie.poster_path }}",
+                    "Name": "{{ movie.title }}",
+                    "Release Date": "{{ movie.release_date }}",
+                    "Overview": "{{ movie.overview }}",
+                    "Review Score": "{{ movie.vote_average }}",
+                    "Movie ID": "{{ movie.id }}"
+                };
+
+                // Make a POST request to add the movie to favorites
+                $.ajax({
+                    type: 'POST',
+                    url: '/add_favorite',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify(movieDetails),
+                    success: function(response) {
+                        alert(response); // Show success message
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                        alert('Failed to add movie to favorites!');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
