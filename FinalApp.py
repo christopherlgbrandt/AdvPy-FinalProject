@@ -20,9 +20,9 @@ client = MongoClient(uri,
 tmdb_api_key = 'b4d93d832dedb548688fd7924b2fff85'
 
 # let's connect to testDATA database I added in
-db = client['testDATA']
+db = client['favoriteMoviesDATA']
 
-collection = db['testCOLLECT']
+collection = db['favoriteMoviesCOLLECT']
 
 # the comment below can be used for testing to make sure your connected to the database.
 # doc_count = collection.count_documents({})
@@ -57,6 +57,69 @@ def search_movie():
         return render_template('movies.html', movies=movies)
     else:
         return "Failed to fetch data from TMDB"
+    
+@app.route('/movie_info')
+def movie_info():
+    movie_id = request.args.get('movie_id')
+    tmdb_result = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={tmdb_api_key}&append_to_response=recommendations'
+
+    response = requests.get(tmdb_result)
+    if response.status_code == 200:
+        movie = response.json()
+        return render_template('info.html', movie=movie)
+    else:
+        return "failed to fetch data from TMDB"
+    
+def favorite(moviePoster, name, releaseDate, overview, reviewScore) -> None:
+   """Allows one to "favorite" a movie saving
+      it to a database on MongoDB
+   """
+   favMovie = {"Movie Poster": moviePoster, "Name": name, "Release Date": releaseDate,
+               "Overview": overview, "Review Score": reviewScore}
+   collection.insert_one(favMovie)
+
+def unFavorite(moviePoster, name, releaseDate, overview, reviewScore) -> None:
+   """Unfavorites a movie
+   """
+   collection.delete_one({"Movie Poster": moviePoster, "Name": name, "Release Date": releaseDate,
+                         "Overview": overview, "Review Score": reviewScore})
+
+@app.route('/add_favorite', methods=['POST'])
+def add_favorite():
+    # Get movie details from the request
+    movie_data = request.json  # Assuming data is sent as JSON
+    favorite(
+        movie_data['Movie Poster'],
+        movie_data['Name'],
+        movie_data['Release Date'],
+        movie_data['Overview'],
+        movie_data['Review Score']
+    )
+    return "Movie added to favorites successfully!"
+
+# Route for removing a movie from favorites
+@app.route('/remove_favorite', methods=['POST'])
+def remove_favorite():
+    # Get movie details from the request
+    movie_data = request.json  # Assuming data is sent as JSON
+    unFavorite(
+        movie_data['Movie Poster'],
+        movie_data['Name'],
+        movie_data['Release Date'],
+        movie_data['Overview'],
+        movie_data['Review Score']
+    )
+    return "Movie removed from favorites successfully!"
+
+@app.route('/favorites')
+def print_favorite():
+    """Prints the list of favorite movies from MongoDB"""
+    result = collection.find()
+    movies = list(result)  # Convert cursor to list of documents
+    if movies:
+        return render_template('favorites.html', movies=movies)
+    else:
+        return "No results found in favorites"
 
 if __name__ == "__main__":
     app.run(debug=True)

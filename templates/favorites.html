@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TMDB Movies</title>
+    <title>Favorite Movies</title>
     <style>
         body {
             text-align: center;
@@ -56,21 +56,17 @@
         <a href="/">Back to Main Page</a>
     </div>
 
-    <h1>TMDB Movies</h1>
+    <h1>Favorite Movies</h1>
 
     <div class="movie-list">
         {% for movie in movies %}
             <div class="movie">
-                <h2>{{ movie.title }}</h2>
-                {% if movie.poster_path %}
-                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                <h2>{{ movie['Name'] }}</h2>
+                {% if movie['Movie Poster'] %}
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie['Movie Poster'] }}" alt="{{ movie['Name'] }} Poster">
                 {% endif %}
-                <h3>Movie Rating: {{ movie.vote_average }}</h3j>
+                <h3>Movie Rating: {{ movie['Review Score'] }}</h3>
                 <!-- You can display more information about each movie here -->
-                <form action="/movie_info" method="GET"> <!-- Change action and method -->
-                    <input type="hidden" name="movie_id" value="{{ movie.id }}">
-                    <button type="submit">More Info</button>
-                </form>
             </div>
         {% endfor %}
     </div>
