@@ -83,6 +83,19 @@ def unFavorite(moviePoster, name, releaseDate, overview, reviewScore) -> None:
    """
    collection.delete_one({"Movie Poster": moviePoster, "Name": name, "Release Date": releaseDate,
                          "Overview": overview, "Review Score": reviewScore})
+   
+def checkFavorite(moviePoster, name, releaseDate, overview, reviewScore) -> bool:
+    """Checks to see if a movie is already in favorites
+
+    Args:
+        Everything relating to the movies to used to search
+
+    Returns:
+        bool: True or False on if the movie is in Mongodb
+    """
+    result = collection.find_one({"Movie Poster": moviePoster, "Name": name, "Release Date": releaseDate,
+                                  "Overview": overview, "Review Score": reviewScore})
+    return result is not None
 
 @app.route('/add_favorite', methods=['POST'])
 def add_favorite():
