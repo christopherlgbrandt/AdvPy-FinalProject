@@ -24,9 +24,11 @@
             align-items: center;
         }
         .left-section img {
-            max-width: 500px;
+            max-width: 450px;
             height: auto;
-            margin-bottom: 20px;
+            margin-top: 50px;
+            position: sticky;
+            top: 5%;
         }
         /* Style for the "More Info" button */
         button#addToFavorites {
@@ -97,12 +99,14 @@
         <div class="left-section">
             {% if movie.poster_path %}
                 <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
-                <button id="addToFavorites">Add to Favorites</button>
-                <button id="addToWatchLater">Add to Watch Later</button>
+                <!-- <button id="addToFavorites">Add to Favorites</button>
+                <button id="addToWatchLater">Add to Watch Later</button> -->
             {% endif %}
         </div>
         <div class="right-section">
             <h1>{{ movie.title }}</h1>
+            <button id="addToFavorites">Add to Favorites</button>
+            <button id="addToWatchLater">Add to Watch Later</button>
             <div class="movie-details">
                 <h3>"{{ movie.tagline }}"</h3>
                 {% for genre in movie.genres %}
