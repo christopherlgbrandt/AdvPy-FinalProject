@@ -2,40 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TMDB Movies</title>
+    <title>Movie Info</title>
     <style>
         body {
-            text-align: center;
-            margin-right: 50px;
-            margin-left: 50px;
+            margin: 0; /* Reset default margin */
+            padding: 0; /* Reset default padding */
             background-color: rgb(77, 12, 73);
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            max-width: 1200px; /* Limit width of the content */
+            margin: 0 auto; /* Center the content horizontally */
+            padding: 20px;
+        }
+        .left-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .left-section img {
+            max-width: 450px;
+            height: auto;
+            margin-top: 50px;
+            position: sticky;
+            top: 5%;
+        }
+        /* Style for the "More Info" button */
+        button#addToFavorites {
+            width: 100%;
+            margin-top: 20px;
+            font-size: 18px;
+            border: none;
+            background-color: white;
+            color: rgb(77, 12, 73);
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button#addToWatchLater {
+            width: 100%;
+            margin-top: 20px;
+            font-size: 18px;
+            border: none;
+            background-color: white;
+            color: rgb(77, 12, 73);
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .right-section {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            margin-left: 200px;
         }
         h1 {
             font-size: 50px;
             margin-bottom: 20px;
             color: white;
         }
-        .movie-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Create a responsive grid layout */
-            gap: 15px 70px; /* Spacing between grid items */
-            justify-items: center; /* Center items horizontally */
-            align-items: center; /* Center items vertically */
-            padding: 0px; /* Add some padding to the grid */
-        }
-        img.movie_info {
-            height: 85%;
-        }
-        .movie {
+        .movie-details {
             text-align: left;
-            margin-bottom: 10px;
-            color: white;
         }
-        .movie img {
-            display: block;
-            margin: 0 auto;
-            max-width: 300px;
-            height: auto;
+        .movie-details p {
+            margin-bottom: 10px;
         }
         .back-button {
             position: absolute;
@@ -51,23 +84,6 @@
             border-radius: 5px;
             font-weight: bold;
         }
-        /* Additional CSS styles for positioning the button */
-        .movie {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .movie .poster-and-button {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
-        .movie .poster-and-button img {
-            margin-right: 20px;
-            max-width: 300px;
-            height: auto;
-        }
     </style>
     <!-- Link jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -75,45 +91,40 @@
 </head>
 <body>
     <div class="back-button">
-        <a href="/">Back to Main Page</a>
-        <a href="javascript:history.back()">Back to Search Results</a>
+        <a href="/">Home</a>
+        <a href="javascript:history.back()">Back</a>
     </div>
 
-    <h1>TMDB Movies</h1>
-
-    <div class="movie">
-        <!-- Movie details -->
-        <div class="poster-and-button">
-            <!-- Movie poster -->
+    <div class="container">
+        <div class="left-section">
             {% if movie.poster_path %}
                 <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                <!-- <button id="addToFavorites">Add to Favorites</button>
+                <button id="addToWatchLater">Add to Watch Later</button> -->
             {% endif %}
-
-            <!-- Button to add movie to favorites -->
+        </div>
+        <div class="right-section">
+            <h1>{{ movie.title }}</h1>
             <button id="addToFavorites">Add to Favorites</button>
-        </div>
-        <div class="movie-details">
-            <h2>{{ movie.title }}</h2>
-            <h3>"{{ movie.tagline }}"</h3>
-            {% for genre in movie.genres %}
-                <h4>{{ genre.name }}</h4>
-            {% endfor %}
-
-            {% if movie.poster_path %}
-                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
-            {% endif %}
-            <h4>Overview</h4>
-            <p>{{ movie.overview }}</p>
-            <p>Movie Rating: {{ movie.vote_average }}</p>
-            <p>{{ movie.runtime }} Minutes</p>
-            <br>
-            <h4>Movies similar to {{ movie.title }}:</h4>
-            {% for i in range(0, 5) %}
-                <p>{{ movie.recommendations.results[i].title }}</p>
-            {% endfor %}
-        <!-- You can display more information about each movie here -->
+            <button id="addToWatchLater">Add to Watch Later</button>
+            <div class="movie-details">
+                <h3>"{{ movie.tagline }}"</h3>
+                {% for genre in movie.genres %}
+                    <h4>{{ genre.name }}</h4>
+                {% endfor %}
+                <h4>Overview</h4>
+                <p>{{ movie.overview }}</p>
+                <p>Movie Rating: {{ movie.vote_average }}</p>
+                <p>{{ movie.runtime }} Minutes</p>
+                <br>
+                <h4>Movies similar to {{ movie.title }}:</h4>
+                {% for i in range(0, 5) %}
+                    <p>{{ movie.recommendations.results[i].title }}</p>
+                {% endfor %}
+            </div>
         </div>
     </div>
+
 
     <!-- Include any JavaScript files if needed -->
     <!-- For example, you can link a JS file in your static folder -->
@@ -127,7 +138,8 @@
                     "Name": "{{ movie.title }}",
                     "Release Date": "{{ movie.release_date }}",
                     "Overview": "{{ movie.overview }}",
-                    "Review Score": "{{ movie.vote_average }}"
+                    "Review Score": "{{ movie.vote_average }}",
+                    "Movie ID": "{{ movie.id }}"
                 };
 
                 // Make a POST request to add the movie to favorites
@@ -142,6 +154,37 @@
                     error: function(error) {
                         console.error('Error:', error);
                         alert('Failed to add movie to favorites!');
+                    }
+                });
+            });
+        });
+    </script>
+     <script>
+        $(document).ready(function() {
+            // Event listener for the "Add to Favorites" button
+            $('#addToWatchLater').on('click', function() {
+                // Prepare the data to be sent (movie details)
+                var movieDetails = {
+                    "Movie Poster": "{{ movie.poster_path }}",
+                    "Name": "{{ movie.title }}",
+                    "Release Date": "{{ movie.release_date }}",
+                    "Overview": "{{ movie.overview }}",
+                    "Review Score": "{{ movie.vote_average }}",
+                    "Movie ID": "{{ movie.id }}"
+                };
+
+                // Make a POST request to add the movie to favorites
+                $.ajax({
+                    type: 'POST',
+                    url: '/add_watchlater',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify(movieDetails),
+                    success: function(response) {
+                        alert(response); // Show success message
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                        alert('Failed to add movie to watch later!');
                     }
                 });
             });
