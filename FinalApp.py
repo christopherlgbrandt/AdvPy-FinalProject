@@ -74,6 +74,9 @@ def favorite(moviePoster, name, releaseDate, overview, reviewScore, movieID) -> 
     """Allows one to "favorite" a movie saving it to a database on MongoDB.
        Checks if the movie is already in favorites before adding it.
     """
+    db = client['favoriteMoviesDATA']
+
+    collection = db['favoriteMoviesCOLLECT']
     # Check if the movie already exists in favorites
     existing_movie = collection.find_one({"Movie ID": movieID})
     if existing_movie:
@@ -91,12 +94,45 @@ def favorite(moviePoster, name, releaseDate, overview, reviewScore, movieID) -> 
     collection.insert_one(favMovie)
     return "Movie added to favorites successfully!"
 
+def wl(moviePoster, name, releaseDate, overview, reviewScore, movieID) -> str:
+    """Allows user to add movie to watch later list. (Checks to make sure the movie is not already stored in list)
+    """
+    db = client['favoriteMoviesDATA']
+
+    collection = db['watchLater']
+    # Check if the movie already exists in favorites
+    existing_movie = collection.find_one({"Movie ID": movieID})
+    if existing_movie:
+        return "Movie already in watch later!"
+    
+    # Movie doesn't exist in favorites, add it to the database
+    wlMovie = {
+        "Movie Poster": moviePoster,
+        "Name": name,
+        "Release Date": releaseDate,
+        "Overview": overview,
+        "Review Score": reviewScore,
+        "Movie ID": movieID
+    }
+    collection.insert_one(wlMovie)
+    return "Movie added to watch later list successfully!"
 
 def unFavorite(moviePoster, name, releaseDate, overview, reviewScore, movieID) -> None:
-   """Unfavorites a movie
-   """
-   print(f"Removing Movie")
-   collection.delete_one({"Movie Poster": moviePoster, "Name": name, "Release Date": releaseDate,
+    """Unfavorites a movie
+    """
+    db = client['favoriteMoviesDATA']
+
+    collection = db['favoriteMoviesCOLLECT']
+    collection.delete_one({"Movie Poster": moviePoster, "Name": name, "Release Date": releaseDate,
+                         "Overview": overview, "Review Score": reviewScore, "Movie ID": movieID})
+
+def unwl(moviePoster, name, releaseDate, overview, reviewScore, movieID) -> None:
+    """Removes a movie from watch later
+    """
+    db = client['favoriteMoviesDATA']
+
+    collection = db['watchLater']
+    collection.delete_one({"Movie Poster": moviePoster, "Name": name, "Release Date": releaseDate,
                          "Overview": overview, "Review Score": reviewScore, "Movie ID": movieID})
 
 @app.route('/add_favorite', methods=['POST'])
@@ -117,6 +153,25 @@ def add_favorite():
     else:
         return response  # Return the message from favorite() function
 
+# Route for adding a movie to watch list
+@app.route('/add_watchlater', methods=['POST'])
+def add_watchlater():
+    # Get movie details from the request
+    movie_data = request.json  # Assuming data is sent as JSON
+    response = wl(
+        movie_data['Movie Poster'],
+        movie_data['Name'],
+        movie_data['Release Date'],
+        movie_data['Overview'],
+        movie_data['Review Score'],
+        movie_data['Movie ID']
+    )
+    # Check the response from the favorite function
+    if response == "Movie added to watch later successfully!":
+        return response
+    else:
+        return response  # Return the message from favorite() function
+
 # Route for removing a movie from favorites
 @app.route('/remove_favorite', methods=['POST'])
 def remove_favorite():
@@ -132,15 +187,46 @@ def remove_favorite():
     )
     return "Movie removed from favorites successfully!"
 
+# Route for removing a movie from watch list
+@app.route('/remove_watchlater', methods=['POST'])
+def remove_watchlater():
+    # Get movie details from the request
+    movie_data = request.json  # Assuming data is sent as JSON
+    unwl(
+        movie_data['Movie Poster'],
+        movie_data['Name'],
+        movie_data['Release Date'],
+        movie_data['Overview'],
+        movie_data['Review Score'],
+        movie_data['Movie ID']
+    )
+    return "Movie removed from watch later successfully!"
+
 @app.route('/favorites')
 def print_favorite():
     """Prints the list of favorite movies from MongoDB"""
+    db = client['favoriteMoviesDATA']
+
+    collection = db['favoriteMoviesCOLLECT']
     result = collection.find()
     movies = list(result)  # Convert cursor to list of documents
     if movies:
         return render_template('favorites.html', movies=movies)
     else:
         return "No results found in favorites"
+
+@app.route('/watchlater')
+def print_watchlater():
+    """Prints the list of watch list movies from MongoDB"""
+    db = client['favoriteMoviesDATA']
+
+    collection = db['watchLater']
+    result = collection.find()
+    movies = list(result)  # Convert cursor to list of documents
+    if movies:
+        return render_template('watchlater.html', movies=movies)
+    else:
+        return "No results found in watchlater"
 
 if __name__ == "__main__":
     app.run(debug=True)
