@@ -21,14 +21,38 @@
             margin-bottom: 10px; 
         }
         h2{
-            font-size: 30px;
-            margin-bottom: 20px; /* Add spacing between elements */
+            font-size: 35px;
+            margin-bottom: 10px; /* Add spacing between elements */
             color: white;
         }
 
-        form{
+        form {
             color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px; /* Add margin for spacing */
         }
+
+        input[type="text"] {
+            width: 300px; /* Adjust width as needed */
+            padding: 10px; /* Adjust padding for inner space */
+            font-size: 16px; /* Adjust font size */
+            border-radius: 5px; /* Add border radius for rounded corners */
+            border: 1px solid #ccc; /* Add border for better visibility */
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px; /* Adjust button padding for height and width */
+            font-size: 16px; /* Adjust button font size */
+            border-radius: 5px; /* Add border radius for rounded corners */
+            border: none;
+            background-color: #007bff; /* Change button color */
+            color: white; /* Change button text color */
+            cursor: pointer;
+        }
+
+      
     </style>
 </head>
 <body>
@@ -39,12 +63,12 @@
         <button type="submit">Search</button>
     </form>
     <!-- Button to navigate to favorites.html -->
-    <a href="/favorites" class="favorites-btn">
-        <button>View Favorites</button>
-    </a>
+    <a href="/favorites" class="favorites-btn" style="width: 9%; margin-top: 10px; font-size: 22px; border: none; background-color: white; color: rgb(77, 12, 73); padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block;">
+        <button style="width: 100%; margin-top: 2px; font-size: 22px; border: none; background-color: white; color: rgb(77, 12, 73); padding: 2px; border-radius: 5px; cursor: pointer;">View Favorites</button>
+    </a>    
     <!-- Button to navigate to watchlater.html -->
-    <a href="/watchlater" class="watchlater-btn">
-        <button>View Watch Later</button>
-    </a>
+    <a href="/watchlater" class="watchlater-btn" style="width: 10%; margin-top: 10px; font-size: 22px; border: none; background-color: white; color: rgb(77, 12, 73); padding: 10px; border-radius: 5px; cursor: pointer; display: inline-block;">
+        <button style="width: 100%; margin-top: 2px; font-size: 22px; border: none; background-color: white; color: rgb(77, 12, 73); padding: 2px; border-radius: 5px; cursor: pointer;">View WatchLater</button>
+    </a>    
 </body>
 </html>
