@@ -66,6 +66,16 @@
                     <img src="https://image.tmdb.org/t/p/w500{{ movie['Movie Poster'] }}" alt="{{ movie['Name'] }} Poster">
                 {% endif %}
                 <h3>Movie Rating: {{ movie['Review Score'] }}</h3>
+                <!-- Add a button to remove the favorite movie -->
+                <button onclick="removeFromFavorites(
+                    '{{ movie['Movie Poster'] }}',
+                    '{{ movie['Name'] }}',
+                    '{{ movie['Release Date'] }}',
+                    '{{ movie['Overview'] }}',
+                    '{{ movie['Review Score'] }}',
+                    '{{ movie['Movie ID'] }}'
+                )">Remove from Favorites</button>
+
                 <!-- You can display more information about each movie here -->
                 <form action="/movie_info" method="GET">
                     <input type="hidden" name="movie_id" value="{{ movie['Movie ID'] }}">
@@ -75,8 +85,36 @@
         {% endfor %}
     </div>
 
-    <!-- Include any JavaScript files if needed -->
-    <!-- For example, you can link a JS file in your static folder -->
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+        function removeFromFavorites(moviePoster, name, releaseDate, overview, reviewScore, movieID) {
+        var movieDetails = {
+            "Movie Poster": moviePoster,
+            "Name": name,
+            "Release Date": releaseDate,
+            "Overview": overview,
+            "Review Score": reviewScore,
+            "Movie ID": movieID
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/remove_favorite',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify(movieDetails),
+            success: function(response) {
+                alert(response); // Show success message
+                location.reload(); // Reload the page after successful removal
+            },
+            error: function(error) {
+                console.error('Error:', error);
+                alert('Failed to remove movie from favorites!');
+            }
+        });
+    }
+</script>
+
 </body>
 </html>

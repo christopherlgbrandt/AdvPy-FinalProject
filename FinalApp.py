@@ -70,17 +70,32 @@ def movie_info():
     else:
         return "failed to fetch data from TMDB"
     
-def favorite(moviePoster, name, releaseDate, overview, reviewScore, movieID) -> None:
-   """Allows one to "favorite" a movie saving
-      it to a database on MongoDB
-   """
-   favMovie = {"Movie Poster": moviePoster, "Name": name, "Release Date": releaseDate,
-               "Overview": overview, "Review Score": reviewScore, "Movie ID": movieID}
-   collection.insert_one(favMovie)
+def favorite(moviePoster, name, releaseDate, overview, reviewScore, movieID) -> str:
+    """Allows one to "favorite" a movie saving it to a database on MongoDB.
+       Checks if the movie is already in favorites before adding it.
+    """
+    # Check if the movie already exists in favorites
+    existing_movie = collection.find_one({"Movie ID": movieID})
+    if existing_movie:
+        return "Movie already in favorites!"
+    
+    # Movie doesn't exist in favorites, add it to the database
+    favMovie = {
+        "Movie Poster": moviePoster,
+        "Name": name,
+        "Release Date": releaseDate,
+        "Overview": overview,
+        "Review Score": reviewScore,
+        "Movie ID": movieID
+    }
+    collection.insert_one(favMovie)
+    return "Movie added to favorites successfully!"
+
 
 def unFavorite(moviePoster, name, releaseDate, overview, reviewScore, movieID) -> None:
    """Unfavorites a movie
    """
+   print(f"Removing Movie")
    collection.delete_one({"Movie Poster": moviePoster, "Name": name, "Release Date": releaseDate,
                          "Overview": overview, "Review Score": reviewScore, "Movie ID": movieID})
 
@@ -88,7 +103,7 @@ def unFavorite(moviePoster, name, releaseDate, overview, reviewScore, movieID) -
 def add_favorite():
     # Get movie details from the request
     movie_data = request.json  # Assuming data is sent as JSON
-    favorite(
+    response = favorite(
         movie_data['Movie Poster'],
         movie_data['Name'],
         movie_data['Release Date'],
@@ -96,7 +111,11 @@ def add_favorite():
         movie_data['Review Score'],
         movie_data['Movie ID']
     )
-    return "Movie added to favorites successfully!"
+    # Check the response from the favorite function
+    if response == "Movie added to favorites successfully!":
+        return response
+    else:
+        return response  # Return the message from favorite() function
 
 # Route for removing a movie from favorites
 @app.route('/remove_favorite', methods=['POST'])
